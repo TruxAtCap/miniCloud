@@ -1,0 +1,4 @@
+[ControlPlane]
+
+[Workers]
+worker3 ansible_user=setupuser

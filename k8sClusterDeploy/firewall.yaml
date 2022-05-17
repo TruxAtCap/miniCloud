@@ -1,0 +1,40 @@
+- hosts: "ControlPlane"
+  remote_user: kube
+  become: yes
+  become_method: sudo
+  gather_facts: yes
+
+  tasks:
+    - name: Install firewalld and keep up to date
+      dnf:
+        name: firewalld
+        state: latest
+      notify:
+        - start firewalld
+
+    - name: Having it started and enabled
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+
+    - name: open ports and 10250
+      firewalld:
+        zone: public
+        port: 10250/tcp
+        permanent: true
+        state: enabled
+      become: yes
+
+    - name: open ports and 6443
+      firewalld:
+        zone: public
+        port: 6443/tcp
+        permanent: true
+        state: enabled
+      become: yes
+
+    - name: Retart firewalld
+      service:
+        name: firewalld
+        state: restarted

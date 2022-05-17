@@ -1,0 +1,8 @@
+
+#changed ansible_user=ansible to user
+[ControlPlane]
+cp1 ansible_user=kube
+
+[Workers]
+w1 ansible_user=kube
+w2 ansible_user=kube

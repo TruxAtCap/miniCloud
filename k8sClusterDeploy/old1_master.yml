@@ -1,0 +1,7 @@
+- hosts: ControlPlane
+  become: yes
+
+  tasks:
+    - name: create cluster configuration file
+      shell: |
+              kubeadm config print init-defaults | tee ClusterConfiguration.yaml
