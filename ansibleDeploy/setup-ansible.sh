@@ -1,5 +1,5 @@
 #!/bin/bash
-TARGETS=(192.168.1.145)
+TARGETS=(192.168.2.100 192.168.2.101 192.168.2.102)
 KEYNAME="MCc1Keytest2"
 KEYPATH="/home/trux/.ssh/$KEYNAME"
 USER="setupuser"

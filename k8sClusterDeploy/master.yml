@@ -6,7 +6,7 @@
 
   tasks:
     - name: initialize the cluster
-      shell: kubeadm init --pod-network-cidr=192.168.1.0/16
+      shell: kubeadm init --pod-network-cidr=192.168.2.0/24
       args:
         chdir: $HOME
         creates: cluster_initialized.txt
@@ -31,7 +31,8 @@
       become_user: kube
       shell: |
               kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
-              kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+              kubectl create -f https://projectcalico.docs.tigera.io/manifests/custom-resources.yaml
+             # kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
       args:
         chdir: $HOME
         
@@ -41,8 +42,9 @@
       shell: kubeadm token create  --print-join-command
       register: kubernetes_join_command
 
-    - name: debug
-      debug: "{{ kubernetes_join_command.stdout }}"
+    - name: Kubernetes Join command
+      ansible.builtin.debug:
+        var: "{{ kubernetes_join_command.stdout }}"
 
     - name: Copy join command to local file.
       become: yes
