@@ -1,0 +1,22 @@
+---
+- name: Demo vSphere Infra setup
+  hosts: "vCenter"
+  #connection: ssh
+  gather_facts: true
+
+  vars_files:
+    - {"vars.yml"}
+
+  tasks:
+
+  - name: VM Folder setup
+  community.vmware.vcenter_folder:
+    hostname: "{{ vcenter_hostname }}"
+    port: 443
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: true
+    datacenter_name: "{{ datacenter_name }}"
+    folder_name: mcTestDir1
+    folder_type: vm
+    state: present
