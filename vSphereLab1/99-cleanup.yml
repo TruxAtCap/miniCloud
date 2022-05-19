@@ -1,6 +1,5 @@
 ---
-# A LANCER EN TANT QUE ROOT sinon le module n'est pas reconnu
-- name: miniCloud vSphere Infra setup
+- name: miniCloud vSphere Cleanup
   hosts: localhost
   gather_facts: false
 
@@ -13,7 +12,20 @@
         - 'yaml'
         - 'yml'
 
-  - name: VM Folder setup
+  - name: "Cleanup of VM : {{ vm_name }}"
+    vmware_guest:
+      hostname: "{{ vcenter_hostname }}"
+      port: 443
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      datacenter: "{{ datacenter_name }}"
+      folder: "{{ datacenter_name }}/vm/Simon/{{ folder_name }}"
+      name: "{{ vm_name }}"
+      state: absent
+      force: true
+      validate_certs: False 
+
+  - name: "Delete folder : {{ folder_name }}"
     community.vmware.vcenter_folder:
       hostname: "{{ vcenter_hostname }}"
       username: "{{ vcenter_username }}"
@@ -22,9 +34,7 @@
       folder_name: "{{ folder_name }}"
       parent_folder: Simon
       folder_type: vm
-      state: present
+      state: absent
       # TO DO : Utiliser les certificats
       validate_certs: False
-    environment:
-      REQUESTS_CA_BUNDLE: /home/trux/miniCloud/vSphereLab1/certs/lin/30e621d5.crt
-    register: vm_folder_creation_result
+ 

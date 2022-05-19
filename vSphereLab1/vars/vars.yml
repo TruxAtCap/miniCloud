@@ -1,0 +1,4 @@
+---
+folder_name: "miniCloud-test"
+vm_name: "MC-c3-test1"
+template_name: "TPL-RockyTrux1.1"
