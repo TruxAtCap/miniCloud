@@ -1,0 +1,48 @@
+---
+- name: miniCloud vSphere deploy vm1
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+  - vars.yml
+  
+  tasks:
+
+  - name: Deploy test node vm
+    vmware_guest:
+      hostname: "{{ vcenter_hostname }}"
+      port: 443
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      datacenter: "{{ datacenter_name }}"
+      folder: "{{ datacenter_name }}/vm/Simon/miniCloud-test"
+
+      name: "MC-c3-test1"
+      template: "TPL-RockyTrux1.1"
+      state: present
+      hardware:
+        memory_mb: 8192
+        num_cpus: 4
+#     disk:
+#       - type: thin
+#         datastore: "{{ datastore }}"
+#         size_gb: 15
+
+      # TO DO : Utiliser les certificats
+      validate_certs: False
+#   environment:
+#     REQUESTS_CA_BUNDLE: /home/trux/miniCloud/vSphereLab1/certs/lin/30e621d5.crt
+#   register: vm_folder_creation_result
+  - name: test node vm PowerOn
+    vmware_guest:
+      hostname: "{{ vcenter_hostname }}"
+      port: 443
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      datacenter: "{{ datacenter_name }}"
+      folder: "{{ datacenter_name }}/vm/Simon/miniCloud-test"
+      name: "MC-c3-test1"
+      state: poweredon
+      validate_certs: False
+

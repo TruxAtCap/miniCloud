@@ -1,5 +1,6 @@
 ---
-- name: Demo vSphere Infra setup
+# A LANCER EN TANT QUE ROOT sinon le module n'est pas reconnu
+- name: miniCloud vSphere Infra setup
   hosts: localhost
   gather_facts: false
   vars_files:
@@ -13,9 +14,11 @@
       username: "{{ vcenter_username }}"
       password: "{{ vcenter_password }}"
       datacenter_name: "{{ datacenter_name }}"
-      folder_name: mcTestDir1
+      folder_name: miniCloud-test
+      parent_folder: Simon
       folder_type: vm
-      state: absent
+      state: present
+      # TO DO : Utiliser les certificats
       validate_certs: False
     environment:
       REQUESTS_CA_BUNDLE: /home/trux/miniCloud/vSphereLab1/certs/lin/30e621d5.crt

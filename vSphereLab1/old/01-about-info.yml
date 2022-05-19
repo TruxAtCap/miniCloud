@@ -3,7 +3,7 @@
   hosts: localhost
   gather_facts: false
   vars_files:
-    - vars.yml
+    - ../vars.yml
   vars:
     - ansible_python_interpreter: "/usr/bin/env python3"
 
@@ -32,10 +32,10 @@
       REQUESTS_CA_BUNDLE: /home/trux/miniCloud/vSphereLab1/certs/lin/30e621d5.crt
     register: login
 
-# - name: Get info about vCenter
-#   community.vmware.vmware_about_info:
-#     hostname: "{{ vcenter_hostname }}"
-#     username: "{{ vcenter_username }}"
-#     password: "{{ vcenter_password }}"
-#     validate_certs: yes
-#   register: vcenter_about_info
+  - name: Get info about vCenter
+    community.vmware.vmware_about_info:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: False
+    register: vcenter_about_info
