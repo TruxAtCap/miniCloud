@@ -1,5 +1,5 @@
-vm_count        = 1
+vm_count        = 2
 rocky_template  = "TPL-RockyTrux1.1"
 datacenter      = "OVH"
 datastore       = "OVH_NVME2"
-host            = "192.168.1.9"
+host            = "esx01.caplab.lcl"
