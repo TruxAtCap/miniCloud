@@ -1,0 +1,41 @@
+---
+- name: Demo test get infos
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars.yml
+  vars:
+    - ansible_python_interpreter: "/usr/bin/env python3"
+
+  tasks:
+
+  - name: Check connection (GET)
+    uri:
+      url: https://www.google.com
+
+# - name: Check connection to vCenter 
+#   uri:
+#     url: https://{{ vcenter_hostname }}/rest/
+#     validate_certs: False
+#   environment:
+#     REQUESTS_CA_BUNDLE: /home/trux/miniCloud/vSphereLab1/certs/lin/30e621d5.r1
+
+  - name: Login into vCenter and get cookies
+    uri:
+      url: https://{{ vcenter_hostname }}/rest/com/vmware/cis/session
+      force_basic_auth: yes
+      validate_certs: False
+      method: POST
+      user: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+    environment:
+      REQUESTS_CA_BUNDLE: /home/trux/miniCloud/vSphereLab1/certs/lin/30e621d5.crt
+    register: login
+
+# - name: Get info about vCenter
+#   community.vmware.vmware_about_info:
+#     hostname: "{{ vcenter_hostname }}"
+#     username: "{{ vcenter_username }}"
+#     password: "{{ vcenter_password }}"
+#     validate_certs: yes
+#   register: vcenter_about_info
