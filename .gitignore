@@ -1,2 +1,3 @@
-vSphereLab1/vars/secret_vars.yml
-vSphereLab1/certs/
+*~
+*.swp
+*.swo

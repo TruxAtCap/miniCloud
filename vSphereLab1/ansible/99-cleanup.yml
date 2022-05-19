@@ -1,4 +1,5 @@
 ---
+# A LANCER EN SUDO POUR LE MODULE community.vmware.vcenter_folder
 - name: miniCloud vSphere Cleanup
   hosts: localhost
   gather_facts: false
@@ -23,7 +24,7 @@
       name: "{{ vm_name }}"
       state: absent
       force: true
-      validate_certs: False 
+      validate_certs: True 
 
   - name: "Delete folder : {{ folder_name }}"
     community.vmware.vcenter_folder:
@@ -35,6 +36,5 @@
       parent_folder: Simon
       folder_type: vm
       state: absent
-      # TO DO : Utiliser les certificats
-      validate_certs: False
+      validate_certs: True
  

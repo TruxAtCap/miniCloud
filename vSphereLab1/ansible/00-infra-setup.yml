@@ -23,8 +23,5 @@
       parent_folder: Simon
       folder_type: vm
       state: present
-      # TO DO : Utiliser les certificats
-      validate_certs: False
-    environment:
-      REQUESTS_CA_BUNDLE: /home/trux/miniCloud/vSphereLab1/certs/lin/30e621d5.crt
+      validate_certs: True
     register: vm_folder_creation_result

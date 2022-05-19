@@ -24,6 +24,7 @@
       name: "{{ vm_name }}"
       template: "{{ template_name }}"
       state: present
+      validate_certs: True
       hardware:
         memory_mb: 8192
         num_cpus: 4
@@ -32,10 +33,6 @@
 #         datastore: "{{ datastore }}"
 #         size_gb: 15
 
-      # TO DO : Utiliser les certificats
-      validate_certs: False
-#   environment:
-#     REQUESTS_CA_BUNDLE: /home/trux/miniCloud/vSphereLab1/certs/lin/30e621d5.crt
 
   - name: vm PowerOn
     vmware_guest:
@@ -47,5 +44,5 @@
       folder: "{{ datacenter_name }}/vm/Simon/miniCloud-test"
       name: "{{ vm_name }}"
       state: poweredon
-      validate_certs: False
+      validate_certs: True
 
