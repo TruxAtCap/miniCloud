@@ -1,4 +1,5 @@
 1-providers.tf
+.check_mac_passwd
 .terraform/
 .terraform*
 terraform.tfstate
