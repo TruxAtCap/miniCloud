@@ -13,3 +13,6 @@ variable "cp_count" {}
 
 variable "worker_ip_start" {}
 variable "cp_ip_start" {}
+
+variable "setup_user" {}
+variable "setup_passwd" {}

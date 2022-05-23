@@ -14,6 +14,20 @@ resource "vsphere_virtual_machine" "control-plane-node" {
   wait_for_guest_net_timeout = 0
   wait_for_guest_ip_timeout  = 0
 
+  # metadata = {
+  #   ssh-keys = var.setup_user:v
+  # }
+  provisioner "file" {
+    source      = "/home/trux/.ssh/ansibleKeyC3.pub"
+    destination = "/home/setupuser/.ssh/ansibleKeyC3.pub"
+
+    connection {
+      type     = "ssh"
+      host     = "192.168.1.${var.cp_ip_start + count.index}"
+      user     = var.setup_user
+      password = var.setup_passwd
+    }
+  }
 
   network_interface {
     network_id = data.vsphere_network.InterLAN.id
