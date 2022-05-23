@@ -2,7 +2,6 @@
 
 variable "datacenter" {}
 variable "datastore" {}
-variable "host" {}
 variable "rocky_template" {}
 variable "vm_firmware" {}
 
@@ -14,5 +13,10 @@ variable "cp_count" {}
 variable "worker_ip_start" {}
 variable "cp_ip_start" {}
 
+# Secrets variables
+variable "host" {}
 variable "setup_user" {}
 variable "setup_passwd" {}
+variable "ssh_key_name" {}
+variable "ssh_key_path" {}
+

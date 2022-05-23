@@ -14,20 +14,25 @@ resource "vsphere_virtual_machine" "control-plane-node" {
   wait_for_guest_net_timeout = 0
   wait_for_guest_ip_timeout  = 0
 
-  # metadata = {
-  #   ssh-keys = var.setup_user:v
-  # }
-  provisioner "file" {
-    source      = "/home/trux/.ssh/ansibleKeyC3.pub"
-    destination = "/home/setupuser/.ssh/ansibleKeyC3.pub"
-
-    connection {
-      type     = "ssh"
-      host     = "192.168.1.${var.cp_ip_start + count.index}"
-      user     = var.setup_user
-      password = var.setup_passwd
-    }
+  # # # Block to connect and send public key to new VMs
+  connection {
+    type     = "ssh"
+    host     = "192.168.1.${var.cp_ip_start + count.index}"
+    user     = var.setup_user
+    password = var.setup_passwd
   }
+  provisioner "file" {
+    source      = "${var.ssh_key_path}${var.ssh_key_name}"
+    destination = "/tmp/${var.ssh_key_name}"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "ls -la > /tmp/testremoteexec.txt",
+      "mkdir -p ~/.ssh",
+      "cat /tmp/${var.ssh_key_name} >> ~/.ssh/authorized_keys"
+    ]
+  }
+  # # #
 
   network_interface {
     network_id = data.vsphere_network.InterLAN.id
