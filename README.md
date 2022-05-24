@@ -21,7 +21,7 @@ Le **service proposé** par miniCloud :
 ###  Comment ça marche ?
 <br>
 
-![miniCloudByMathieu.png](https://github.com/TruxAtCap/miniCloud/blob/main/miniCloudByMathieu.png?raw=true)
+![miniCloudByMathieu.png](https://github.com/TruxAtCap/miniCloud/blob/main/img/miniCloud.png?raw=true)
 
 - Point de depart : Une VM "controller" (Rocky Linux 8.5) dans le vCenter v7
 - Déploiement et préparation des VMs necessaire à la mise en place du cluster Kubernetes, "Control Plane nodes" et "Workers nodes", avec Terraform et Ansible.
@@ -86,6 +86,4 @@ calico CNI:
 Ansible : 2.9.27
 Terraform : 1.2.0-1 / 1.1.9-1 
 Packer : 1.8.0
-
-
 ```
