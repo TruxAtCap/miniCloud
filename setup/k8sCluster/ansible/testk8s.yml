@@ -1,0 +1,178 @@
+---
+- hosts: "ControlPlane, Workers"
+  remote_user: ansible
+  become: yes
+  become_method: sudo
+  become_user: root
+  gather_facts: yes
+  connection: ssh
+
+  tasks:
+    - name: Install some dependencies
+      dnf:
+        name: git,curl,vim,iproute-tc,dnf-utils,python3-dnf-plugin-versionlock
+        state: latest
+      tags:
+        - deps
+
+#   - name: Getting rid of unuseful stuff
+#     dnf:
+#       name: httpd>=2.2
+#       state: present
+#   #   autoremove: yes
+#     tags:
+#       - deps
+
+    - name: set SELinux to permissive in config
+      lineinfile:
+        dest: /etc/selinux/config
+        regexp: '^SELINUX='
+        line: 'SELINUX=permissive'
+      tags:
+        - selinux
+
+    - name: Check SELinux Current state
+      shell: getenforce
+      register: sestate
+      changed_when: "'Enforcing' in sestate.stdout"
+      tags:
+        - selinux
+
+    - name: set SELinux to Permissive live
+      shell: setenforce 0
+      when: "'Permissive' not in sestate.stdout"
+      tags:
+        - selinux
+
+    - name: Diable Swap
+      shell: |
+              sed -i '/swap/d' /etc/fstab
+              swapoff -a
+
+    - name: Create containerd config file
+      file:
+        path: "/etc/modules-load.d/containerd.conf"
+        state: "touch"
+
+    - name: Add conf for containerd
+      blockinfile:
+        path: "/etc/modules-load.d/containerd.conf"
+        block: |
+              overlay
+              br_netfilter
+
+    - name: modprobe
+      shell: |
+              modprobe overlay
+              modprobe br_netfilter
+
+    - name: Set system config for K8s networking
+      file:
+        path: "/etc/sysctl.d/99-kubernetes-cri.conf"
+        state: "touch"
+
+    - name: Add conf for containerd
+      blockinfile:
+        path: "/etc/sysctl.d/99-kubernetes-cri.conf"
+        block: |
+              net.bridge.bridge-nf-call-iptables = 1
+              net.ipv4.ip_forward = 1
+              net.bridge.bridge-nf-call-ip6tables = 1
+
+    - name: Apply new settings
+      command: sysctl --system
+
+    - name: install containerd
+      shell: |
+              VERSION="1.6.4-3.1.el8"
+              yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+              dnf install containerd.io-$VERSION -y
+              containerd config default | tee /etc/containerd/config.toml
+              # OPTION to configure systemd cgroup driver
+              sed -i 's/SystemdCgroup\ =\ false/SystemdCgroup\ =\ true/g' /etc/containerd/config.toml
+              systemctl restart containerd
+              systemctl enable containerd
+              dnf versionlock add containerd.io-$VERSION
+      tags:
+        - containerd
+
+#   - name: Add and sign the kubernetes repo
+#     shell: |
+#             cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
+#             [kubernetes]
+#             name=Kubernetes
+#             baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+#             enabled=1
+#             gpgcheck=1
+#             repo_gpgcheck=1
+#             gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+#             EOF
+
+    - stat: path="/etc/yum.repos.d/kubernetes.repo"
+      register: kuberepo
+      tags:
+        test
+
+#   - name: Check if kubernetes repo exists.
+#     stat:
+#       path: "/etc/yum.repos.d/kubernetes.repo"
+#     register: kuberepo
+#     tags:
+#       test
+
+    - name: Create file kubernetes.repo if not existing
+      file:
+        path: "/etc/yum.repos.d/kubernetes.repo"
+        state: "touch"
+      when: (kuberepo.stat.isreg is undefined) or (not kuberepo.stat.isreg)
+      tags:
+        - test
+
+    - name: Add and sign the kubernetes repo
+      blockinfile:
+        path: "/etc/yum.repos.d/kubernetes.repo"
+        block: |
+                [kubernetes]
+                name=Kubernetes
+                baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+                enabled=1
+                gpgcheck=1
+                repo_gpgcheck=1
+                gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+      tags:
+        - test
+
+    - name: Installing Kubernetes kubeadm kubelet and kubectl
+      vars:
+        kubever: "1.24.0*"
+      dnf:
+        name: kubectl-{{ kubever }},kubeadm-{{ kubever }},kubelet-{{ kubever }}
+        state: present
+      tags:
+        - kubedeps
+
+    - name: Starting and Enabling kubelet service
+      service:
+        name: kubelet
+        state: stopped #started
+        enabled: yes
+      tags:
+        - kubedeps
+
+#   - name: Installing Kubernetes kubeadm kubelet and kubectl and enabling it
+#     shell: |
+#             VERSION="1.24.0-0"
+#             dnf install kubectl-$VERSION -y
+#     tags:
+#       - kubectl
+#       
+#   - name: Installing Kubernetes kubeadm kubelet and kubectl and enabling it
+#     hosts: ControlPlane
+#     shell: |
+#             VERSION="1.24.0-0"
+#             dnf install kubectl-$VERSION #kubeadm-$VERSION kubelet-$VERSION
+#     #        dnf versionlock add kubelet-$VERSION kubeadm-$VERSION kubectl-$VERSION
+#     #        systemctl enable kubelet
+#     tags:
+#       - kubectl
+

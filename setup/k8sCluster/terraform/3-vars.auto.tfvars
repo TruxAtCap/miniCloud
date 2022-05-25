@@ -7,7 +7,7 @@ vm_firmware    = "efi"
 k8s_cluster_nb = 3
 
 cp_count     = 1
-worker_count = 1
+worker_count = 2
 
 # last ip byte only
 cp_ip_start     = 33
