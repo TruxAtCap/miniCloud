@@ -3,6 +3,6 @@
 [ControlPlane]
 192.168.1.33 ansible_user=setupuser
 
-#[Workers]
-#w1 ansible_user=kube
-#w2 ansible_user=kube
+[Workers]
+192.168.1.35 ansible_user=kube
+192.168.1.36 ansible_user=setupuser

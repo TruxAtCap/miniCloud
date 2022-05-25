@@ -1,0 +1,7 @@
+---
+- hosts: all
+  
+  tasks:
+  - name: make directory
+    file:
+      path: "/home/
