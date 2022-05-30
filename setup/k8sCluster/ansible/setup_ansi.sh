@@ -21,7 +21,7 @@ ansible-playbook make_user.yml --extra-vars "ansible_user=setupuser ansible_pass
 
 # Recuperation de la liste des ips dans le "hosts" de ansible
 echo -e "\nGathering hosts IPs and adding them on local ~/.ssh/config with matching key\n"
-hostfile="hosts"
+hostfile="../terraform/TerraHosts"
 for ip in $(grep '^[1-2]' $hostfile | cut -d " " -f1); do 
   ip_host_list+=$ip
   ip_host_list+=","
