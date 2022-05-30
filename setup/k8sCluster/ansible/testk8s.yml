@@ -1,11 +1,11 @@
 ---
 - hosts: "ControlPlane, Workers"
-  remote_user: ansible
+#  remote_user: ansible
   become: yes
-  become_method: sudo
-  become_user: root
-  gather_facts: yes
-  connection: ssh
+#  become_method: sudo
+#  become_user: root
+#  gather_facts: yes
+#  connection: ssh
 
   tasks:
     - name: Install some dependencies
@@ -66,7 +66,7 @@
               modprobe overlay
               modprobe br_netfilter
 
-    - name: Set system config for K8s networking
+    - name: Touch config file for K8s networking
       file:
         path: "/etc/sysctl.d/99-kubernetes-cri.conf"
         state: "touch"

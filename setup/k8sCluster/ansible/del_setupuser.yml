@@ -1,0 +1,11 @@
+- hosts: "Workers, ControlPlane"
+  become: yes
+
+  tasks:
+    - name: delete setup user for obvious security reasons
+#      user: name=setupuser state=absent
+      user: 
+        name: setupuser
+        state: absent
+        remove: yes
+        force: yes

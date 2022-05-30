@@ -26,7 +26,3 @@ data "vsphere_network" "InterLAN" {
   name          = "Internal_LAN"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
-
-#data "local_file" "public_ssh_key" {
-#  filename = "~/.ssh/MCc1Keytest2.pub" 
-#}
