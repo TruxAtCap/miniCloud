@@ -1,0 +1,12 @@
+---
+- name: host file update - Local DNS setup across all the servers
+  hosts: ControlPlane,Workers
+  gather_facts: yes
+  become: yes
+
+  tasks:
+
+    - name: Generate /etc/hosts file
+      template:
+        src=etc_hosts.tmpl
+        dest=/etc/hosts

@@ -14,7 +14,6 @@ resource "vsphere_virtual_machine" "worker-node" {
   wait_for_guest_net_timeout = 0
   wait_for_guest_ip_timeout  = 0
 
-
   network_interface {
     network_id = data.vsphere_network.InterLAN.id
   }
