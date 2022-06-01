@@ -20,23 +20,24 @@ echo -e "\nSetting up "kube" sudoer account on remote hosts"
 ansible-playbook make_user.yml --extra-vars "ansible_user=setupuser ansible_password=$PASSWD"
 
 
-##
-## REGLER LA PARTIE SUIVANTE POUR ADAPTER AU NOUVEAU HOSTS FILE
-## GENERE PAR TERRAFORM
 #
-## Recuperation de la liste des ips dans le "hosts" de ansible
-#echo -e "\nGathering hosts IPs and adding them on local ~/.ssh/config with matching key\n"
-#hostfile="../terraform/TerraHosts"
-#for ip in $(grep '^[1-2]' $hostfile | cut -d " " -f1); do 
-#  ip_host_list+=$ip
-#  ip_host_list+=","
-#done
-## Ajout des ips dans config si absent pour que ansible sache quelle cle utiliser
-#grep $ip_host_list /home/trux/.ssh/config || echo -e "\nMatch host=$ip_host_list \n  IdentitiesOnly yes\n  IdentityFile $KEYPATH" | sudo tee -a /home/trux/.ssh/config
+# REGLER LA PARTIE SUIVANTE POUR ADAPTER AU NOUVEAU HOSTS FILE
+# GENERE PAR TERRAFORM
+
+# Recuperation de la liste des ips dans le "hosts" de ansible
+echo -e "\nGathering hosts IPs and adding them on local ~/.ssh/config with matching key\n"
+hostfile="../terraform/TerraHosts"
+for ip in $(grep 'ansible_host=' $hostfile | cut -d "=" -f2 | cut -d " " -f1)
+do
+  ip_host_list+=$ip
+  ip_host_list+=","
+done
+# Ajout des ips dans config si absent pour que ansible sache quelle cle utiliser
+grep $ip_host_list /home/trux/.ssh/config || echo -e "\nMatch host=$ip_host_list \n  IdentitiesOnly yes\n  IdentityFile $KEYPATH" | sudo tee -a /home/trux/.ssh/config
+
 #
-##
-## JUSQUE ICI
-##
+# JUSQUE ICI
+#
 
 
 # Suppression du setupUser
