@@ -6,7 +6,7 @@ vm_firmware    = "efi"
 # vm names impacted by
 k8s_cluster_nb = 3
 
-cp_count     = 2
+cp_count     = 1
 worker_count = 2
 
 # last ip byte only

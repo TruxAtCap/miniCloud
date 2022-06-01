@@ -1,9 +1,0 @@
-
-#changed ansible_user=ansible to user
-[ControlPlane]
-192.168.1.33 ansible_user=kube
-
-[Workers]
-192.168.1.35 ansible_user=kube
-192.168.1.36 ansible_user=kube
-192.168.1.37 ansible_user=kube

@@ -1,6 +1,5 @@
 [ControlPlane]
 mc-c3-cp1 ansible_host=192.168.1.33 ansible_user=kube
-mc-c3-cp2 ansible_host=192.168.1.34 ansible_user=kube
 
 [Workers]
 mc-c3-worker1 ansible_host=192.168.1.35 ansible_user=kube

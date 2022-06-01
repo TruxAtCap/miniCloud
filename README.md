@@ -40,38 +40,17 @@ Et voilà, miniCloud est installé et prêt à livrer des machines virtuelles !
 
 
 
-## Installation : au 24/05/2022
+## Installation : au 01/06/2022
 
 - Lancer une nouvelle VM sur le vsphere basée sur TPL_RockyTrux1.1 (à généraliser avec un template Packer)
-- faire un git pull du projet. 
-- Renseigner les bon credentials du vSphere pour Terraform, Ansible et Packer
+- faire un git pull du projet
+- Renseigner les bon credentials du vSphere pour Terraform, Ansible et Packer (detailler les fichiers et les noms
 - definir le nombre de control plane nodes / worker nodes ainsi que leurs plages d'adresses IP 
 dans miniCloud/vSphereLab1/terraform/
-
-A UPDATER APRES REFONTE DU GIT TREE
-- dans newHosts deplacer le premier worker en ControlerPlane sans changer son nom
-- lancer le playbook users.yml avec -i newHosts
-- lancer le playbook install-k8sCluster.yml avec -i newHosts:
-- lancer le playbook master.yml
-- lancer le playbook join-nodes.yml
+- lancer le init.sh
 
 
-```
-git directory tree a refaire (en cours...):
-|- setup/
-   |- packerTemplates/ ?
-   |- K8sCluster/
-      |- terraform/
-      |- ansible/
-   |- AWXPod/
-   |- PackerPod/
-   |- TerraPod ? (or in AWX ?)
-|- packer/
-   |- VMtemplates ?
 
-|- img/
-   |- miniCloud.png
-  
 ```
 
 ---

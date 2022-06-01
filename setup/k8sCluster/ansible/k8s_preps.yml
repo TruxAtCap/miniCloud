@@ -17,8 +17,8 @@
 
 #   - name: Getting rid of unuseful stuff
 #     dnf:
-#       name: httpd>=2.2
-#       state: present
+#       name: httpd,nano
+#       state: absent
 #   #   autoremove: yes
 #     tags:
 #       - deps
@@ -96,29 +96,10 @@
       tags:
         - containerd
 
-#   - name: Add and sign the kubernetes repo
-#     shell: |
-#             cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
-#             [kubernetes]
-#             name=Kubernetes
-#             baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-#             enabled=1
-#             gpgcheck=1
-#             repo_gpgcheck=1
-#             gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-#             EOF
-
     - stat: path="/etc/yum.repos.d/kubernetes.repo"
       register: kuberepo
       tags:
         test
-
-#   - name: Check if kubernetes repo exists.
-#     stat:
-#       path: "/etc/yum.repos.d/kubernetes.repo"
-#     register: kuberepo
-#     tags:
-#       test
 
     - name: Create file kubernetes.repo if not existing
       file:
@@ -158,21 +139,3 @@
         enabled: yes
       tags:
         - kubedeps
-
-#   - name: Installing Kubernetes kubeadm kubelet and kubectl and enabling it
-#     shell: |
-#             VERSION="1.24.0-0"
-#             dnf install kubectl-$VERSION -y
-#     tags:
-#       - kubectl
-#       
-#   - name: Installing Kubernetes kubeadm kubelet and kubectl and enabling it
-#     hosts: ControlPlane
-#     shell: |
-#             VERSION="1.24.0-0"
-#             dnf install kubectl-$VERSION #kubeadm-$VERSION kubelet-$VERSION
-#     #        dnf versionlock add kubelet-$VERSION kubeadm-$VERSION kubectl-$VERSION
-#     #        systemctl enable kubelet
-#     tags:
-#       - kubectl
-
