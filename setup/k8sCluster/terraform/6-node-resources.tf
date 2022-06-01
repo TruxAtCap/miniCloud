@@ -32,6 +32,7 @@ resource "vsphere_virtual_machine" "worker-node" {
         ipv4_netmask = 24
       }
       ipv4_gateway    = "192.168.1.1"
+      dns_suffix_list = ["caplab.lcl"]
       dns_server_list = ["192.168.1.1"]
     }
   }

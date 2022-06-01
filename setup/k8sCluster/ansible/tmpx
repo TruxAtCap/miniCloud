@@ -1,0 +1,2 @@
+
+{% set short_name = item.split('.') %}
