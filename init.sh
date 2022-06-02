@@ -8,9 +8,14 @@ echo -e "Starting to terraform the kubernetes cluster now.\n"
 terraform -chdir=$ClusterPath/terraform apply -auto-approve
 
 echo -e "\nSetting up Ansible.\n"
+echo -e "\nWaiting for ip addresses... \n"
+sleep 12
 
 cd $ClusterPath/ansible
 ./setup_ansi.sh
 
 echo -e "\nInitializing Kubernetes Cluster\n"
 ./setup_k8s.sh
+
+cd ../
+./watch_k8s_pods.sh

@@ -26,6 +26,20 @@
         remote_src: yes
         owner: kube
 
+#   - name: copies calico tigera-operator.yaml
+#     get_url:
+#       url: https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
+#       dest: /tmp/tigera-operator.yaml
+#     tags:
+#       - tigera
+
+
+#   - name: modifies pod network ip range in calico-custom-resources.yaml
+#     lineinfile:
+#       dest: /tmp/tigera-operator.yaml
+#       regexp: 'cidr:'
+#       line: '      cidr: 192.168.2.0/24'
+
     - name: copies calico custom-resources.yaml
       get_url:
         url: https://projectcalico.docs.tigera.io/manifests/custom-resources.yaml
