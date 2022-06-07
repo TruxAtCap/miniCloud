@@ -2,6 +2,7 @@
   become: yes
 
   tasks:
+
     - name: create the kube user account
       user: name=kube append=yes state=present createhome=yes shell=/bin/bash
 
@@ -15,3 +16,7 @@
       authorized_key: user=kube key="{{item}}"
       with_file:
         - ~/.ssh/TestKey42.pub
+
+#   - name: test user delegated to Worker1 only
+#     user: name=testuser state=absent createhome=no
+#     when: inventory_hostname not in groups['Workers'][0]

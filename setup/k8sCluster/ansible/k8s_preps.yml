@@ -10,18 +10,23 @@
   tasks:
     - name: Install some dependencies
       dnf:
-        name: git,curl,vim,iproute-tc,dnf-utils,python3-dnf-plugin-versionlock
+        name: git,curl,vim,iproute-tc,dnf-utils,python3-dnf-plugin-versionlock,python3-jsonpatch,python3-pyyaml
         state: latest
       tags:
         - deps
 
-#   - name: Getting rid of unuseful stuff
-#     dnf:
-#       name: httpd,nano
-#       state: absent
-#   #   autoremove: yes
-#     tags:
-#       - deps
+#   - name: Checking presence of containerd.io
+#     command: rpm -q containerd.io
+#     register: rpm_check
+
+    - name: Getting rid of runc base install for cleaner install if containerd.io not present
+      dnf:
+        name: runc
+        state: absent
+        autoremove: yes
+#     when: rpm_check.rc ==1
+      tags:
+        - deps
 
     - name: set SELinux to permissive in config
       lineinfile:
@@ -125,7 +130,7 @@
 
     - name: Installing Kubernetes kubeadm kubelet and kubectl
       vars:
-        kubever: "1.24.0*"
+        kubever: "1.24.1*"
       dnf:
         name: kubectl-{{ kubever }},kubeadm-{{ kubever }},kubelet-{{ kubever }}
         state: present

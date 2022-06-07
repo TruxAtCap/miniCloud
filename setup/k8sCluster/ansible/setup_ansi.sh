@@ -6,8 +6,14 @@ KEYNAME="TestKey42" #Has got to match with the one in make_user.yml
 KEYPATH="/home/trux/.ssh/$KEYNAME"
 
 echo -e "Setting up the ansible connection with remote hosts. \n"
-echo -e "Pinging now with setupuser credentials."
-ansible all -m ping --extra-vars "ansible_user=setupuser ansible_password=$PASSWD"
+#echo -e "Pinging now with setupuser credentials."
+echo -e "Waiting for new VM's to come online...\n"
+
+ansible-playbook wait_for_online.yml --extra-vars "ansible_user=setupuser ansible_password=$PASSWD"
+
+#sleep 30
+#ansible all -m ping --extra-vars "ansible_user=setupuser ansible_password=$PASSWD"
+#sleep 30
 
 if ! [ -f $KEYPATH ]; then
   echo -e "\nGenerating new ssh key pair named $KEYNAME\n"
@@ -19,11 +25,6 @@ fi
 echo -e "\nSetting up "kube" sudoer account on remote hosts"
 ansible-playbook make_user.yml --extra-vars "ansible_user=setupuser ansible_password=$PASSWD"
 
-
-#
-# REGLER LA PARTIE SUIVANTE POUR ADAPTER AU NOUVEAU HOSTS FILE
-# GENERE PAR TERRAFORM
-
 # Recuperation de la liste des ips dans le "hosts" de ansible
 echo -e "\nGathering hosts IPs and adding them on local ~/.ssh/config with matching key\n"
 hostfile="../terraform/TerraHosts"
@@ -34,11 +35,6 @@ do
 done
 # Ajout des ips dans config si absent pour que ansible sache quelle cle utiliser
 grep $ip_host_list /home/trux/.ssh/config || echo -e "\nMatch host=$ip_host_list \n  IdentitiesOnly yes\n  IdentityFile $KEYPATH" | sudo tee -a /home/trux/.ssh/config
-
-#
-# JUSQUE ICI
-#
-
 
 # Suppression du setupUser
 echo -e "\nSuppression du setupuser\n"

@@ -4,8 +4,8 @@ resource "vsphere_virtual_machine" "worker-node" {
   num_cpus            = 2
   memory              = 4096
   folder              = vsphere_folder.folder.path
-  guest_id            = data.vsphere_virtual_machine.rocky_template.guest_id
-  scsi_type           = data.vsphere_virtual_machine.rocky_template.scsi_type
+  guest_id            = data.vsphere_virtual_machine.worker_template.guest_id
+  scsi_type           = data.vsphere_virtual_machine.worker_template.scsi_type
   firmware            = var.vm_firmware
   datastore_id        = data.vsphere_datastore.datastore.id
   resource_pool_id    = data.vsphere_resource_pool.pool.id
@@ -19,7 +19,7 @@ resource "vsphere_virtual_machine" "worker-node" {
   }
 
   clone {
-    template_uuid = data.vsphere_virtual_machine.rocky_template.id
+    template_uuid = data.vsphere_virtual_machine.worker_template.id
     customize {
       linux_options {
         #        host_name = "mc-c${var.k8s_cluster_nb}-${count.index + 1}"
@@ -39,8 +39,8 @@ resource "vsphere_virtual_machine" "worker-node" {
 
   disk {
     label         = "disk0"
-    size          = data.vsphere_virtual_machine.rocky_template.disks.0.size
-    eagerly_scrub = data.vsphere_virtual_machine.rocky_template.disks.0.eagerly_scrub
+    size          = data.vsphere_virtual_machine.worker_template.disks.0.size
+    eagerly_scrub = data.vsphere_virtual_machine.worker_template.disks.0.eagerly_scrub
   }
 
   lifecycle {

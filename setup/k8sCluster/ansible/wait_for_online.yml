@@ -1,0 +1,9 @@
+- hosts: "ControlPlane,Workers"
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: Wait for all created VM's to be online
+      wait_for_connection:
+    #  timeout: 300
+  

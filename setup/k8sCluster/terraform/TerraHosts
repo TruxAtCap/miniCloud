@@ -1,6 +1,10 @@
 [ControlPlane]
-mc-c3-cp1 ansible_host=192.168.1.33 ansible_user=kube
+mc-c3-cp1 ansible_host=192.168.1.33
 
 [Workers]
-mc-c3-worker1 ansible_host=192.168.1.35 ansible_user=kube
-mc-c3-worker2 ansible_host=192.168.1.36 ansible_user=kube
+mc-c3-worker1 ansible_host=192.168.1.35
+mc-c3-worker2 ansible_host=192.168.1.36
+mc-c3-worker3 ansible_host=192.168.1.37
+
+[all:vars]
+ansible_user=kube

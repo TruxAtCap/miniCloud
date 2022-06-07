@@ -1,9 +1,12 @@
 [ControlPlane]
 %{ for cp_index in cp_number ~}
-${ cp_hostname[cp_index] } ansible_host=${ control_plane_ip[cp_index] } ansible_user=${ansi_user}
+${ cp_hostname[cp_index] } ansible_host=${ control_plane_ip[cp_index] }
 %{ endfor ~}
 
 [Workers]
 %{ for worker_index in worker_number ~}
-${ worker_hostname[worker_index] } ansible_host=${ worker_ip[worker_index] } ansible_user=${ ansi_user }
+${ worker_hostname[worker_index] } ansible_host=${ worker_ip[worker_index] }
 %{ endfor ~}
+
+[all:vars]
+ansible_user=${ ansi_user }

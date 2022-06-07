@@ -1,0 +1,18 @@
+- hosts: ControlPlane
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: get dashboard yaml for kubernetes 
+      get_url:
+        url: https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended.yaml
+        dest: /tmp/dashboard.yaml
+  
+#   - name: start the dashboard 
+#     kubernetes.core.k8s:
+#       state: present
+#       src: /tmp/dashboard.yaml
+
+
+
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended.yaml

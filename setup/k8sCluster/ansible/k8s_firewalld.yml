@@ -51,6 +51,8 @@
         - 10251-10252/tcp
         - 10257/tcp
         - 10259/tcp
+        - 8001/tcp
+        - 8080/tcp
 
 #   - name: Working Nodes - opening specific ports
 #     when: inventory_hostname in groups['Workers']

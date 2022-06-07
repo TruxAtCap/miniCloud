@@ -12,8 +12,13 @@ data "vsphere_datastore" "datastore" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
-data "vsphere_virtual_machine" "rocky_template" {
-  name          = var.rocky_template
+data "vsphere_virtual_machine" "cp_template" {
+  name          = var.cp_template
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+data "vsphere_virtual_machine" "worker_template" {
+  name          = var.worker_template
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 

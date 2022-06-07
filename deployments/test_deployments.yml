@@ -1,0 +1,15 @@
+---
+- hosts: "ControlPlane"
+  gather_facts: yes
+#  become: yes
+#  connection: ssh
+
+  tasks:
+    - name: Test deployment - nginx
+      command: kubectl apply -f https://k8s.io/examples/controllers/nginx-deployment.yaml
+
+    - name: Test deployment - dashboard
+      command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended.yaml
+
+#    - name: Starting the dashboard
+#      command: kubectl proxy --address='0.0.0.0' --port=8001 &

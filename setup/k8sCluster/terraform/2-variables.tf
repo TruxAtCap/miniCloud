@@ -2,7 +2,8 @@
 
 variable "datacenter" {}
 variable "datastore" {}
-variable "rocky_template" {}
+variable "cp_template" {}
+variable "worker_template" {}
 variable "vm_firmware" {}
 
 variable "k8s_cluster_nb" {}
