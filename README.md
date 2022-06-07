@@ -51,15 +51,16 @@ dans miniCloud/vSphereLab1/terraform/
 
 
 
-```
+
 
 ---
+
 ## Versions : 
 ```
 VMController : Rocky Linux 8.5 / kernel : 4.18.0-348.23.1.el8_5.x86_64
 vCenter / ESXi / vSphere 7.0
 
-kubernetes : 1.24.0-0
+kubernetes : 1.24.1-0
 containerd.io CRI : 1.6.4-3.1.el8 
 calico CNI: 
 Ansible : 2.9.27
