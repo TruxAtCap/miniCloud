@@ -6,6 +6,9 @@ ansible-playbook k8s_firewalld.yml
 echo -e "\nDifferent preps for k8s cluster. \n"
 ansible-playbook k8s_preps.yml
 
+echo -e "\nAdd Watch alias = watch -n 1 kubectl get po -A -o wide\n"
+ansible-playbook watch_alias.yml
+
 echo -e "\nInitializing Control Plane Node \n"
 ansible-playbook k8s_init_master.yml
 

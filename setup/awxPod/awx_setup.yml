@@ -1,0 +1,22 @@
+---
+- hosts: "ControlPlane"
+  gather_facts: yes
+
+  tasks:
+
+    - name: Copying awx-test.yaml file for awx setup
+      copy:
+        src: awx-test.yaml
+        dest: ~/awx-test.yaml
+
+    - name: adding line to kustomization.yaml for 
+      lineinfile: 
+        path: ~/kustomization.yaml
+        line: "  - awx-test.yaml"
+        insertafter: "  - github*"
+
+    - name: re applying kustomize conf for awx 
+      shell: ./kustomize build . | kubectl apply -f - --validate=false
+      args:
+        chdir: ~/
+

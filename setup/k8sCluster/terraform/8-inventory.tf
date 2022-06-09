@@ -10,9 +10,6 @@ resource "local_file" "ansible_inventory" {
 
     worker_ip         = vsphere_virtual_machine.worker-node.*.clone.0.customize.0.network_interface.0.ipv4_address
     worker_hostname       = vsphere_virtual_machine.worker-node.*.clone.0.customize.0.linux_options.0.host_name
-
-#    guest_ip_test     = vsphere_virtual_machine.control-plane-node.*.guest_ip_addresses
-#    guest_ip_test  = vsphere_virtual_machine.control-plane-node.*.clone.0.customize.0.network_interface.0.ipv4_address
     }
   )
   filename  = "TerraHosts"

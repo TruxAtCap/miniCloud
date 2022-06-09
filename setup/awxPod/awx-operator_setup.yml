@@ -1,0 +1,20 @@
+---
+- hosts: "ControlPlane"
+  gather_facts: yes
+
+  tasks:
+
+    - name: Copying kustomize file for awx-operator setup
+      copy:
+        src: kustomization.yaml
+        dest: ~/kustomization.yaml
+
+    - name: touch build.yml
+      file:
+        path: ~/build.yml
+        state: touch
+
+    - name: building awx-operator and applying
+      shell: ./kustomize build . | kubectl apply -f -
+      args:
+        chdir: ~/

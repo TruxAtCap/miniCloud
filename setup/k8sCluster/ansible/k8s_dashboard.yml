@@ -1,18 +1,41 @@
 - hosts: ControlPlane
   become: yes
   gather_facts: yes
+  vars:
+    ansible_python_interpeter: /usr/bin/python3
 
   tasks:
     - name: get dashboard yaml for kubernetes 
       get_url:
         url: https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended.yaml
         dest: /tmp/dashboard.yaml
-  
+
+### k8s module stil not working...
 #   - name: start the dashboard 
 #     kubernetes.core.k8s:
+#     # api_version: v1
 #       state: present
 #       src: /tmp/dashboard.yaml
 
+    - name: deploy the dashboard
+      become: no
+      command: kubectl apply -f /tmp/dashboard.yaml
+
+    - name: create dashboard address shortcut
+      file:
+        path="/root/dashboard.url"
+        state="touch"
+
+    - name: add dashboard address
+      lineinfile:
+        dest: /root/dashboard.url
+        line: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+    - name: start the dashboard
+      become: no
+      async : 2592000
+      command: kubectl proxy
+      poll: 0
 
 
 # kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended.yaml

@@ -1,0 +1,21 @@
+---
+- hosts: "ControlPlane"
+  become: yes
+
+  tasks:
+    - name: touch custom alias file
+      file:
+        path=/etc/profile.d/00-aliases.sh
+        state=touch
+
+    - name: create watch alias
+      lineinfile:
+        path="/etc/profile.d/00-aliases.sh"
+        line="alias Watch='watch -n 1 kubectl get pod -A -o wide'"
+        state=present
+        create=True
+
+#   - name: source .bashrc
+#     shell: "source ~/.bashrc"
+#     args:
+#       executable: /bin/bash

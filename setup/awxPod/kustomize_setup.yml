@@ -1,0 +1,23 @@
+---
+- hosts: "ControlPlane"
+  gather_facts: yes
+
+  tasks:
+
+    - name: set path variable
+      set_fact:
+        kustomize_path: "/tmp/kusto"
+
+    - name: Create kustomize tmp install directory
+      file:
+        path: "{{ kustomize_path }}"
+        state: directory
+
+    - name: getting kustomize install script
+      get_url:
+        url: https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh
+        dest: "{{ kustomize_path }}/install_kustomize.sh"
+        mode: "0755"
+
+    - name: Installing kustomize module in ~/
+      command: "{{ kustomize_path }}/install_kustomize.sh"
