@@ -6,7 +6,7 @@
 
   tasks:
     - name: initialize the cluster
-      shell: kubeadm init --pod-network-cidr=192.168.2.0/24
+      shell: kubeadm init --pod-network-cidr=192.168.128.0/17
       args:
         chdir: $HOME
         creates: cluster_initialized.txt
@@ -49,7 +49,7 @@
       lineinfile:
         dest: /tmp/calico-custom-resources.yaml
         regexp: 'cidr:'
-        line: '      cidr: 192.168.2.0/24'
+        line: '      cidr: 192.168.128.0/17'
 
     - name: install Pod network
       become: yes

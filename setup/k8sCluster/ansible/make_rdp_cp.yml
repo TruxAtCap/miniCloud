@@ -1,0 +1,39 @@
+---
+- hosts: "ControlPlane"
+  become: yes
+
+  tasks:
+    - name: install epel repo
+      dnf:
+        name: epel-release
+        state: present
+
+    - name: install tigervnc server and xrdp
+      dnf:
+        name: tigervnc-server,xrdp
+        state: present
+
+    - name: Control Plane - opening specific ports
+      firewalld:
+        zone: public
+        port: 3389/tcp
+        permanent: true
+        state: enabled
+
+    - name: add TLSv1 in xrdp config file
+      lineinfile:
+        path: "/etc/xrdp/xrdp.ini"
+        regexp: '^ssl_protocols'
+        line: 'ssl_protocols=TLSv1, TLSv1.2, TLSv1.3'
+
+    - name: Starting and Enabling xrdp service
+      service:
+        name: xrdp
+        state: started
+        enabled: yes
+
+    - name: Reboot
+      reboot:
+
+    - name: Wait for the server back online
+      wait_for_connection:

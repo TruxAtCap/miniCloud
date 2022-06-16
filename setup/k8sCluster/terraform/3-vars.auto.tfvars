@@ -1,4 +1,4 @@
-cp_template     = "TPL-RockyTruxGUI" 
+cp_template     = "TPL-RockyTruxGUI"
 worker_template = "TPL-RockyTrux-1.2"
 datacenter      = "OVH"
 datastore       = "OVH_NVME2"
