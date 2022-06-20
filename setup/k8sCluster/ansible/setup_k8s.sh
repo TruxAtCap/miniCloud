@@ -9,6 +9,9 @@ ansible-playbook k8s_preps.yml
 echo -e "\nAdd Watch alias = watch -n 1 kubectl get po -A -o wide\n"
 ansible-playbook watch_alias.yml
 
+echo -e "\nSetting up xrdp server for control plane node\n"
+ansible-playbook make_rdp_cp.yml
+
 echo -e "\nInitializing Control Plane Node \n"
 ansible-playbook k8s_init_master.yml
 

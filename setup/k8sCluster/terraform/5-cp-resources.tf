@@ -14,6 +14,8 @@ resource "vsphere_virtual_machine" "control-plane-node" {
   wait_for_guest_net_timeout = 0
   wait_for_guest_ip_timeout  = 0
 
+  enable_disk_uuid = "true"
+
   network_interface {
     network_id = data.vsphere_network.InterLAN.id
   }
@@ -34,6 +36,7 @@ resource "vsphere_virtual_machine" "control-plane-node" {
       ipv4_gateway    = "192.168.1.1"
       dns_suffix_list = ["caplab.lcl"]
       dns_server_list = ["192.168.1.1"]
+
     }
   }
 

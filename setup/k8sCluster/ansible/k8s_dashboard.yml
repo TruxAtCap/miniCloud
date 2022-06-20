@@ -23,13 +23,14 @@
 
     - name: create dashboard address shortcut
       file:
-        path="/root/dashboard.url"
+        path="/tmp/dashboard.sh"
         state="touch"
+        mode="0755"
 
     - name: add dashboard address
       lineinfile:
-        dest: /root/dashboard.url
-        line: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+        dest: /tmp/dashboard.sh
+        line: firefox "http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/"
 
     - name: start the dashboard
       become: no
@@ -37,5 +38,28 @@
       command: kubectl proxy
       poll: 0
 
+    - name: copy file to make service account and a ClusterRoleBinding
+      copy:
+        src: k8s_adminuser-dashboard.yml
+        dest: /tmp/adminuser-dashboard.yml
+
+    - name: apply service account and ClusterRoleBinding
+      become: no
+      command: kubectl apply -f /tmp/adminuser-dashboard.yml
+
+    - name: create token file
+      file:
+        path="/tmp/token-dashboard"
+        state="touch"
+
+    - name: generate connection token
+      become: no
+      command: kubectl create token admin-user -n kubernetes-dashboard
+      register: token
+
+    - name: add token to token-dashboard
+      lineinfile:
+        dest: /tmp/token-dashboard
+        line: "{{ token.stdout }}"
 
 # kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended.yaml
