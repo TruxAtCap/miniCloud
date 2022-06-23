@@ -1,0 +1,20 @@
+---
+- hosts: "ControlPlane"
+  gather_facts: yes
+
+  tasks:
+
+    - name: Copying postgres.pv.yml file for persistent volume setup
+      copy:
+        src: postgres.pv.yml
+        dest: ~/postgres.pv.yml
+
+#   - name: adding line to kustomization.yaml for 
+#     lineinfile: 
+#       path: ~/kustomization.yaml
+#       line: "  - awx-test.yaml"
+#       insertafter: "  - github*"
+
+    - name: apply pv
+      shell: kubectl apply -f postgres.pv.yml
+

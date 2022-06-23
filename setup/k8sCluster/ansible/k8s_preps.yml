@@ -10,7 +10,7 @@
   tasks:
     - name: Install some dependencies
       dnf:
-        name: git,curl,vim,iproute-tc,dnf-utils,python3-dnf-plugin-versionlock,python3-jsonpatch,python3-pyyaml
+        name: nfs-utils,git,curl,vim,iproute-tc,dnf-utils,python3-dnf-plugin-versionlock,python3-jsonpatch,python3-pyyaml
         state: latest
       tags:
         - deps
