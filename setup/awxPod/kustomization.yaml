@@ -10,3 +10,7 @@ images:
 
     # Specify a custom namespace in which to install AWX
 namespace: awx
+#patches:
+#  - patch: |-
+#      - arg
+#    target: 
