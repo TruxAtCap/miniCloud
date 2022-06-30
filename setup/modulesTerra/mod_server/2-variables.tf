@@ -5,6 +5,12 @@ variable "datastore" {}
 variable "host" {
   description = "name of the ESX host on which the vSphere is installed"
 }
+
+#ariable "VSPHERE_SERVER" {
+# type        = string
+# default     = $VSPHERE_SERVER
+
+
 #######################
 ## VM Hardware SPECS ##
 #######################
@@ -42,6 +48,11 @@ variable "vm_domain" {
 ################
 ## NETWORKING ##
 ################
+
+#variable "vm_ipv4_start" {
+#  description = "last octet of ipv4 address that is the starting point of the ip address list required for multipile static ip assignments"
+#  default     = ""
+#}
 
 variable "vm_ipv4_addr" {
   description = "ipv4 address of the vm. Leave blank (default) for dhcp lease"

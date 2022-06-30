@@ -15,7 +15,8 @@ resource "vsphere_virtual_machine" "server" {
   wait_for_guest_net_timeout = 0
   wait_for_guest_ip_timeout  = 0
 
-  enable_disk_uuid = "true"
+  enable_disk_uuid    = "true"
+# vm_ipv4_start       = var.vm_ipv4_start 
 
   network_interface {
     network_id = data.vsphere_network.InterLAN.id
