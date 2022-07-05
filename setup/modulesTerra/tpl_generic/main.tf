@@ -4,12 +4,12 @@ module "folder1" {
   source    = "../../mod_folder"
   
   datacenter      = "OVH"
-  vm_folder_path = "/Simon/${basename(path.cwd)}"
+  vm_folder_pathi = "/Collaborateurs/${basename(path.cwd)}"
 }
 
 variable "vm_ipv4_start" {
   description     = "last octect of ipv4 address that is the first of the ip pool needed"
-# default         = 41
+  default         = 41
 }
 
 module "tpl_server" {
@@ -21,7 +21,7 @@ module "tpl_server" {
   datastore       = "OVH_NVME2"
   host            = "esx01.caplab.lcl"
   vm_name         = "${basename(path.cwd)}-${count.index + 1}"
-  vm_folder       = "/Simon/${basename(path.cwd)}" 
+  vm_folder       = "/Collaborateurs/${basename(path.cwd)}" 
 
       ## Customization of OS ##
   vm_hostname     = "${basename(path.cwd)}-${count.index + 1}"
@@ -32,6 +32,6 @@ module "tpl_server" {
 # vm_ipv4_addr    = "192.168.1.${var.vm_ipv4_start + count.index}"
 # vm_ipv4_netmask = 24
 # vm_ipv4_gateway = "192.168.1.1"
-  vm_dns_suffix_list  = ["caplab.lcl"]
-  vm_dns_server_list  = ["192.168.1.1"]
+# vm_dns_suffix_list  = ["caplab.lcl"]
+# vm_dns_server_list  = ["192.168.1.1"]
 }
